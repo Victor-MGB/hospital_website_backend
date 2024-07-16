@@ -80,10 +80,15 @@ const InsuranceSchema = new Schema({
   coverageDetails: { type: String }
 });
 
+// Extended Billing Schema
 const BillingSchema = new Schema({
   billingStatus: { type: String },
   pendingPayments: { type: Number },
-  itemizedBill: { type: String }
+  itemizedBill: { type: String },
+  initialCharges: { type: Number },
+  interimPayments: [{ amount: { type: Number }, date: { type: Date } }],
+  finalBill: { type: Number },
+  paymentHistory: [{ paymentDate: { type: Date }, amountPaid: { type: Number } }]
 });
 
 const ConsentFormSchema = new Schema({
