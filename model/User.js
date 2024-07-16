@@ -129,10 +129,10 @@ const UserSchema = new Schema({
   scheduledCareActivities: [{ type: ScheduledCareSchema }],
   patientObservations: { type: String },
   alerts: [{ type: AlertSchema }],
-  insuranceDetails: { type: InsuranceSchema }],
+  insuranceDetails: { type: InsuranceSchema },
   billingInformation: { type: BillingSchema },
   consentForms: [{ type: ConsentFormSchema }],
-  dischargePlanning: { type: DischargeSchema }],
+  dischargePlanning: { type: DischargeSchema },
   patientStatistics: { type: PatientStatisticsSchema },
   performanceMetrics: { type: PerformanceMetricsSchema },
   profilePicture: { type: String }, // Add this line for profile picture
