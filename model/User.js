@@ -135,7 +135,7 @@ const UserSchema = new Schema({
   emergencyContact: { type: EmergencyContactSchema },
   medicalRecordNumber: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  admissionDetails: { type: AdmissionSchema },
+  admissionDetails: { type: AdmissionDetailsSchema },
   vitalSigns: { type: VitalSignsSchema },
   medicalHistory: { type: MedicalHistorySchema },
   currentMedications: [{ type: MedicationSchema }],
