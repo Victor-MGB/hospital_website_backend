@@ -13,11 +13,10 @@ const EmergencyContactSchema = new Schema({
   phoneNumber: { type: String }
 });
 
-const AdmissionSchema = new Schema({
-  admissionDate: { type: Date },
-  department: { type: String },
-  attendingPhysician: { type: String },
-  roomNumber: { type: String }
+const AdmissionDetailsSchema = new Schema({
+  admissionDate: { type: Date, required: true },
+  dischargeDate: { type: Date },
+  reason: { type: String, required: true }
 });
 
 const VitalSignsSchema = new Schema({

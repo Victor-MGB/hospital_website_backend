@@ -189,64 +189,68 @@ const getUserDetails =  async (req, res) => {
   };
 
   // POST admission details for a user
+// POST admission details for a user
 const postAdmission = async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      const admissionDetails = req.body;
-  
-      const user = await User.findById(userId);
-  
-      if (!user) {
-        return res.status(404).json({ success: false, message: 'User not found' });
-      }
-  
-      user.admissionDetails = admissionDetails;
-      await user.save();
-  
-      res.json({ success: true, message: 'Admission details added successfully', user });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
-  };
+  try {
+    const userId = req.params.userId;
+    const admissionDetails = req.body;
 
-  const getAdmission =  async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      const user = await User.findById(userId);
-  
-      if (!user) {
-        return res.status(404).json({ success: false, message: 'User not found' });
-      }
-  
-      if (!user.admissionDetails) {
-        return res.status(404).json({ success: false, message: 'No admission details found for this user' });
-      }
-  
-      res.json({ success: true, admissionDetails: user.admissionDetails,message:'user admission retrieved successfully' });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
-  };
+    const user = await User.findById(userId);
 
-  const putAdmission =  async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      const updatedAdmissionDetails = req.body;
-  
-      const user = await User.findById(userId);
-  
-      if (!user) {
-        return res.status(404).json({ success: false, message: 'User not found' });
-      }
-  
-      user.admissionDetails = { ...user.admissionDetails._doc, ...updatedAdmissionDetails };
-      await user.save();
-  
-      res.json({ success: true, message: 'Admission details updated successfully', admissionDetails: user.admissionDetails });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
     }
-  };
+
+    user.admissionDetails = admissionDetails;
+    await user.save();
+
+    res.json({ success: true, message: 'Admission details added successfully', user });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// GET admission details for a user
+const getAdmission = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if (!user.admissionDetails) {
+      return res.status(404).json({ success: false, message: 'No admission details found for this user' });
+    }
+
+    res.json({ success: true, admissionDetails: user.admissionDetails, message: 'User admission retrieved successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+// PUT (update) admission details for a user
+const putAdmission = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const updatedAdmissionDetails = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.admissionDetails = { ...user.admissionDetails.toObject(), ...updatedAdmissionDetails };
+    await user.save();
+
+    res.json({ success: true, message: 'Admission details updated successfully', admissionDetails: user.admissionDetails });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 
   const postVitalSign =  async (req, res) => {
     try {
