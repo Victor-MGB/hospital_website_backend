@@ -60,12 +60,17 @@ const ImagingResultSchema = new Schema({
 
 const CareNoteSchema = new Schema({
   note: { type: String },
+  date:{type:Date},
+  author:{type:String},
   timestamp: { type: Date }
 });
 
 const ScheduledCareSchema = new Schema({
   activity: { type: String },
-  schedule: { type: Date }
+  schedule: { type: Date },
+  date:{type:Date},
+  timestamp: { type: Date },
+  notes:{type:String}
 });
 
 const AlertSchema = new Schema({
@@ -77,7 +82,8 @@ const AlertSchema = new Schema({
 const InsuranceSchema = new Schema({
   provider: { type: String },
   policyNumber: { type: String },
-  coverageDetails: { type: String }
+  coverageDetails: { type: String },
+  expiryDate: { type: String }
 });
 
 // Extended Billing Schema
@@ -91,8 +97,13 @@ const BillingSchema = new Schema({
   paymentHistory: [{ paymentDate: { type: Date }, amountPaid: { type: Number } }]
 });
 
+
 const ConsentFormSchema = new Schema({
   formName: { type: String },
+  formType:{type:String},
+  formDate:{type:String},
+  signedBy:{type:String},
+  signature:{type:String},
   signedDate: { type: Date }
 });
 
@@ -102,10 +113,12 @@ const DischargeSchema = new Schema({
   postDischargeCare: { type: String }
 });
 
-const PatientStatisticsSchema = new Schema({
-  admissionStatistics: { type: String },
-  lengthOfStay: { type: String },
-  readmissionRates: { type: String }
+const StatisticsSchema = new Schema({
+  height: { type: String },
+  weight: { type: String },
+  BMI:{type:String},
+  bloodPressure:{type:String},
+  date: { type: Date, default: Date.now }
 });
 
 const PerformanceMetricsSchema = new Schema({
@@ -122,6 +135,7 @@ const UserSchema = new Schema({
   contactInformation: { type: ContactSchema },
   emergencyContact: { type: EmergencyContactSchema },
   medicalRecordNumber: { type: String, unique: true, required: true },
+  password: { type: String, required: true },
   admissionDetails: { type: AdmissionSchema },
   vitalSigns: { type: VitalSignsSchema },
   medicalHistory: { type: MedicalHistorySchema },
@@ -134,13 +148,13 @@ const UserSchema = new Schema({
   scheduledCareActivities: [{ type: ScheduledCareSchema }],
   patientObservations: { type: String },
   alerts: [{ type: AlertSchema }],
-  insuranceDetails: { type: InsuranceSchema },
-  billingInformation: { type: BillingSchema },
+  insuranceDetails: [InsuranceSchema],  // Ensure this line is included
+  billingInformation: { type: [BillingSchema], default: [] }, // Ensure it's an array with a default value
   consentForms: [{ type: ConsentFormSchema }],
-  dischargePlanning: { type: DischargeSchema },
-  patientStatistics: { type: PatientStatisticsSchema },
-  performanceMetrics: { type: PerformanceMetricsSchema },
-  profilePicture: { type: String }, // Add this line for profile picture
+  dischargePlanning: [DischargeSchema],  // Ensure this line is included
+  statistics: [StatisticsSchema], // Ensure this line is included
+  performanceMetrics: [PerformanceMetricsSchema],  // Include this line to have performance metrics as an array
+  profilePicture: { type: String, default: '' }, 
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
