@@ -249,28 +249,27 @@ const putAdmission = async (req, res) => {
 };
 
 
-  const postVitalSign =  async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      const vitalSigns = req.body;
-  
-      const user = await User.findById(userId);
-  
-      if (!user) {
-        return res.status(404).json({ success: false, message: 'User not found' });
-      }
-  
-      user.vitalSigns = vitalSigns;
-      await user.save();
-  
-      res.json({ success: true, message: 'Vital signs added successfully', vitalSigns: user.vitalSigns });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
-  };
+const postVitalSign = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const vitalSigns = req.body;
 
-  // GET retrieve vital signs for a user
-const getVitalSign =  async (req, res) => {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    user.vitalSigns = vitalSigns;
+    await user.save();
+
+    res.json({ success: true, message: 'Vital signs added successfully', vitalSigns: user.vitalSigns });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+const getVitalSign = async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await User.findById(userId);
@@ -289,8 +288,7 @@ const getVitalSign =  async (req, res) => {
   }
 };
 
-// PUT update vital signs for a user
-const putVitalSign =  async (req, res) => {
+const putVitalSign = async (req, res) => {
   try {
     const userId = req.params.userId;
     const updatedVitalSigns = req.body;
@@ -301,7 +299,7 @@ const putVitalSign =  async (req, res) => {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    user.vitalSigns = { ...user.vitalSigns._doc, ...updatedVitalSigns };
+    user.vitalSigns = { ...user.vitalSigns.toObject(), ...updatedVitalSigns };
     await user.save();
 
     res.json({ success: true, message: 'Vital signs updated successfully', vitalSigns: user.vitalSigns });
@@ -309,6 +307,7 @@ const putVitalSign =  async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 // POST add medical history for a user
 const postMedicalHistory =  async (req, res) => {

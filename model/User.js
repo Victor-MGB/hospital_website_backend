@@ -20,11 +20,12 @@ const AdmissionDetailsSchema = new Schema({
 });
 
 const VitalSignsSchema = new Schema({
-  temperature: { type: Number },
   bloodPressure: { type: String },
   heartRate: { type: Number },
+  temperature: { type: Number },
   respiratoryRate: { type: Number },
-  oxygenSaturation: { type: Number }
+  oxygenSaturation: { type: Number },
+  dateRecorded: { type: Date, default: Date.now }
 });
 
 const MedicalHistorySchema = new Schema({
