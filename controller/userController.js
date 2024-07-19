@@ -4,35 +4,53 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
+const generateMedicalRecordNumber = () => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  const length = 10;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+
+// Register User Endpoint
 const registerUser = async (req, res) => {
-    try {
-      const { fullName, age, gender, contactInformation, emergencyContact, medicalRecordNumber, password } = req.body;
-  
-      // Check if user already exists
-      const existingUser = await User.findOne({ medicalRecordNumber });
-      if (existingUser) {
-        return res.status(400).json({ message: 'User already registered', user: existingUser });
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      const newUser = new User({
-        fullName,
-        age,
-        gender,
-        contactInformation,
-        emergencyContact,
-        medicalRecordNumber,
-        password: hashedPassword
-      });
-  
-      await newUser.save();
-      res.status(201).json({ message: 'User registered successfully', user: newUser });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+  try {
+    const { fullName, age, gender, contactInformation, emergencyContact, password } = req.body;
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ 'contactInformation.email': contactInformation.email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already registered', user: existingUser });
     }
-  };
-  
+
+    // Generate a unique medical record number
+    let medicalRecordNumber;
+    let userWithMRN;
+    do {
+      medicalRecordNumber = generateMedicalRecordNumber();
+      userWithMRN = await User.findOne({ medicalRecordNumber });
+    } while (userWithMRN);
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      fullName,
+      age,
+      gender,
+      contactInformation,
+      emergencyContact,
+      medicalRecordNumber,
+      password: hashedPassword,
+    });
+
+    await newUser.save();
+    res.status(201).json({ message: 'User registered successfully', user: newUser });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 const loginUser = async (req, res) => {
     try {
