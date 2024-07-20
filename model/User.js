@@ -29,10 +29,12 @@ const VitalSignsSchema = new Schema({
 });
 
 const MedicalHistorySchema = new Schema({
-  diagnoses: [{ type: String }],
+  conditions: [{ type: String }],
   surgeries: [{ type: String }],
+  medications: [{ type: String }],
   allergies: [{ type: String }],
-  ongoingConditions: [{ type: String }]
+  familyHistory: [{ type: String }],
+  dateRecorded: { type: Date, default: Date.now }
 });
 
 const MedicationSchema = new Schema({

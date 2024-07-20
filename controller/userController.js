@@ -309,8 +309,7 @@ const putVitalSign = async (req, res) => {
 };
 
 
-// POST add medical history for a user
-const postMedicalHistory =  async (req, res) => {
+const postMedicalHistory = async (req, res) => {
   try {
     const userId = req.params.userId;
     const medicalHistory = req.body;
@@ -330,8 +329,7 @@ const postMedicalHistory =  async (req, res) => {
   }
 };
 
-// GET retrieve medical history for a user
-const getMedicalHistory =  async (req, res) => {
+const getMedicalHistory = async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await User.findById(userId);
@@ -350,8 +348,8 @@ const getMedicalHistory =  async (req, res) => {
   }
 };
 
-// PUT update medical history for a user
-const putMedicalHistory =  async (req, res) => {
+
+const putMedicalHistory = async (req, res) => {
   try {
     const userId = req.params.userId;
     const updatedMedicalHistory = req.body;
@@ -362,7 +360,7 @@ const putMedicalHistory =  async (req, res) => {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
 
-    user.medicalHistory = { ...user.medicalHistory._doc, ...updatedMedicalHistory };
+    user.medicalHistory = { ...user.medicalHistory.toObject(), ...updatedMedicalHistory };
     await user.save();
 
     res.json({ success: true, message: 'Medical history updated successfully', medicalHistory: user.medicalHistory });
@@ -370,6 +368,7 @@ const putMedicalHistory =  async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 // POST add a medication for a user
 const postMedication =  async (req, res) => {
