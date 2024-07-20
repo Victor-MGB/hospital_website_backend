@@ -38,9 +38,11 @@ const MedicalHistorySchema = new Schema({
 });
 
 const MedicationSchema = new Schema({
-  name: { type: String },
-  dosage: { type: String },
-  administrationTimes: [{ type: String }]
+  name: { type: String, required: true },
+  dosage: { type: String, required: true },
+  frequency: { type: String, required: true },
+  startDate: { type: Date, required: true },
+  endDate: { type: Date }
 });
 
 const TreatmentPlanSchema = new Schema({
@@ -141,7 +143,7 @@ const UserSchema = new Schema({
   admissionDetails: { type: AdmissionDetailsSchema },
   vitalSigns: { type: VitalSignsSchema },
   medicalHistory: { type: MedicalHistorySchema },
-  currentMedications: [{ type: MedicationSchema }],
+  currentMedications: [MedicationSchema],
   treatmentPlans: [{ type: TreatmentPlanSchema }],
   labResults: [{ type: LabResultSchema }],
   imagingResults: [{ type: ImagingResultSchema }],

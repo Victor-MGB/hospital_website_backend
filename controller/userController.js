@@ -369,9 +369,7 @@ const putMedicalHistory = async (req, res) => {
   }
 };
 
-
-// POST add a medication for a user
-const postMedication =  async (req, res) => {
+const postMedication = async (req, res) => {
   try {
     const userId = req.params.userId;
     const medication = req.body;
@@ -391,8 +389,7 @@ const postMedication =  async (req, res) => {
   }
 };
 
-// GET retrieve all current medications for a user
-const getMedication =  async (req, res) => {
+const getMedication = async (req, res) => {
   try {
     const userId = req.params.userId;
     const user = await User.findById(userId);
@@ -407,8 +404,7 @@ const getMedication =  async (req, res) => {
   }
 };
 
-// PUT update a specific medication for a user
-const putMedication =  async (req, res) => {
+const putMedication = async (req, res) => {
   try {
     const userId = req.params.userId;
     const medicationId = req.params.medicationId;
