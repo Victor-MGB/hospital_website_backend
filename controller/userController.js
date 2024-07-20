@@ -375,7 +375,6 @@ const postMedication = async (req, res) => {
     const medication = req.body;
 
     const user = await User.findById(userId);
-
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found' });
     }
@@ -385,10 +384,11 @@ const postMedication = async (req, res) => {
 
     res.json({ success: true, message: 'Medication added successfully', medications: user.currentMedications });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, message: 'Error adding medication', error: error.message });
   }
 };
 
+// Other methods similarl
 const getMedication = async (req, res) => {
   try {
     const userId = req.params.userId;
