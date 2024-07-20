@@ -46,9 +46,12 @@ const MedicationSchema = new Schema({
 });
 
 const TreatmentPlanSchema = new Schema({
-  protocol: { type: String },
-  upcomingProcedures: [{ type: String }]
-});
+  title: { type: String, required: true },
+  description: { type: String },
+  startDate: { type: Date },
+  endDate: { type: Date },
+  status: { type: String, enum: ['pending', 'in-progress', 'completed'], default: 'pending' }
+}, { _id: false });
 
 const LabResultSchema = new Schema({
   testType: { type: String },
@@ -144,7 +147,7 @@ const UserSchema = new Schema({
   vitalSigns: { type: VitalSignsSchema },
   medicalHistory: { type: MedicalHistorySchema },
   currentMedications: [MedicationSchema],
-  treatmentPlans: [{ type: TreatmentPlanSchema }],
+  treatmentPlans: [TreatmentPlanSchema],
   labResults: [{ type: LabResultSchema }],
   imagingResults: [{ type: ImagingResultSchema }],
   otherTestResults: [{ type: Schema.Types.Mixed }],
