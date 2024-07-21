@@ -11,7 +11,6 @@ const generateMedicalRecordNumber = () => {
   return 'MRN' + Math.floor(100000 + Math.random() * 900000).toString();
 };
 
-// Register a new user
 router.post('/auth/register', async (req, res) => {
   const { first_name, last_name, date_of_birth, gender, phone, email, username, password } = req.body;
 
@@ -47,8 +46,7 @@ router.post('/auth/register', async (req, res) => {
         contact: {
           phone,
           email
-        },
-        
+        }
       },
       auth: {
         username,
@@ -60,7 +58,7 @@ router.post('/auth/register', async (req, res) => {
     await newUser.save();
 
     // Send the medical record number to the user's email
-    sendEmail(email, 'Your Medical Record Number', `Your medical record number is ${medicalRecordNumber}. Use this to login.`);
+    await sendEmail(email, 'Your Medical Record Number', `Your medical record number is ${medicalRecordNumber}. Use this to login.`);
 
     res.status(201).json({
       success: true,
@@ -68,10 +66,10 @@ router.post('/auth/register', async (req, res) => {
       user: newUser
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error registering user', error });
+    console.error('Error registering user:', error.message); // Log the specific error message
+    res.status(500).json({ success: false, message: 'Error registering user', error: error.message });
   }
 });
-
 
 // Log in a user
 router.post('/auth/login', async (req, res) => {
