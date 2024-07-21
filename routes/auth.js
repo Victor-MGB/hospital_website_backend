@@ -13,7 +13,7 @@ const generateMedicalRecordNumber = () => {
 
 // Register a new user
 router.post('/auth/register', async (req, res) => {
-  const { first_name, last_name, date_of_birth, gender, phone, email, username, password, profilePicture } = req.body;
+  const { first_name, last_name, date_of_birth, gender, phone, email, username, password } = req.body;
 
   try {
     // Check if a user with the same email or username already exists
@@ -48,7 +48,7 @@ router.post('/auth/register', async (req, res) => {
           phone,
           email
         },
-        profilePicture
+        
       },
       auth: {
         username,
@@ -105,7 +105,6 @@ router.post('/auth/login', async (req, res) => {
         date_of_birth: user.personal_info.date_of_birth,
         gender: user.personal_info.gender,
         contact: user.personal_info.contact,
-        profilePicture: user.personal_info.profilePicture,
         medicalRecordNumber: user.medicalRecordNumber,
         medical_info: user.medical_info,
         insurance_info: user.insurance_info,

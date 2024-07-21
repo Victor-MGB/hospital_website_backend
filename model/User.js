@@ -106,8 +106,8 @@ const UserSchema = new Schema({
     date_of_birth: { type: Date, required: true },
     gender: { type: String, required: true },
     contact: ContactSchema,
-    profilePicture: { type: String } // Added profilePicture
   },
+  profilePicture: { type: String }, // Added profilePicture
   medical_info: MedicalInfoSchema,
   appointments: [AppointmentSchema],
   emergency_contact: { type: EmergencyContactSchema },
