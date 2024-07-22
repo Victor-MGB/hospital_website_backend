@@ -10,7 +10,6 @@ const insuranceInfoRoutes = require('./routes/insuranceInfo');
 const billingInfoRoutes = require('./routes/billingInfo');
 const appointmentRoutes = require('./routes/appointments');
 const emergencyContact = require('./routes/emergencyInfo')
-const imageRoutes = require('./routes/image');
 const userRoutes = require('./routes/userImage'); // Ensure this path is correct // Ensure this path is correct
 const path = require('path');
 const fs = require('fs')
@@ -40,7 +39,7 @@ app.use('/api', insuranceInfoRoutes);
 app.use('/api', billingInfoRoutes);
 app.use('/api', appointmentRoutes);
 app.use('/api', emergencyContact)
-app.use('/api', imageRoutes);
+app.use('/api', userRoutes)
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,

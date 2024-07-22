@@ -90,14 +90,6 @@ const BillingInfoSchema = new Schema({
   billing_stages: [BillingStageSchema]
 });
 
-const SharedImageSchema = new Schema({
-  user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // User who owns the image
-  image_url: { type: String, required: true },  // URL where the image is stored
-  shared_with: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // User who receives the image
-  shared_by: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // User who shared the image
-  timestamp: { type: Date, default: Date.now }  // When the image was shared
-});
-
 
 const UserSchema = new Schema({
   personal_info: {
@@ -121,7 +113,6 @@ const UserSchema = new Schema({
   medicalRecordNumber: { type: String, unique: true, required: true } // Added medicalRecordNumber
 });
 
-const SharedImage = mongoose.model('SharedImage', SharedImageSchema);
 const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
