@@ -91,11 +91,11 @@ const BillingInfoSchema = new Schema({
 });
 
 const SharedImageSchema = new Schema({
-  user_id: { type: mongoose.Types.ObjectId, required: true },
-  image_url: { type: String, required: true },
-  shared_with: { type: mongoose.Types.ObjectId, required: true },
-  shared_by: { type: mongoose.Types.ObjectId, required: true },
-  timestamp: { type: Date, default: Date.now }
+  user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // User who owns the image
+  image_url: { type: String, required: true },  // URL where the image is stored
+  shared_with: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // User who receives the image
+  shared_by: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // User who shared the image
+  timestamp: { type: Date, default: Date.now }  // When the image was shared
 });
 
 

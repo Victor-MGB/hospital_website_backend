@@ -18,16 +18,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Endpoint to upload an image and share with a user or admin
-router.post('/users/:userId/share-image', upload.single('image'), async (req, res) => {
-  const { userId } = req.params;
+router.post('/share-image', upload.single('image'), async (req, res) => {
   const { sharedWith, sharedBy } = req.body; // sharedWith: ID of the recipient, sharedBy: ID of the sender (admin or user)
 
   try {
-    const user = await User.findById(userId);
+    // Check if user exists (optional)
+    const user = await User.findById(sharedBy);
     if (!user) return res.status(404).json({ message: 'User not found' });
 
     const newSharedImage = new SharedImage({
-      user_id: userId,
+      user_id: sharedBy,
       image_url: `/uploads/${req.file.filename}`,
       shared_with: sharedWith,
       shared_by: sharedBy
@@ -42,7 +42,7 @@ router.post('/users/:userId/share-image', upload.single('image'), async (req, re
 });
 
 // Endpoint to get shared images for a user
-router.get('/users/:userId/shared-images', async (req, res) => {
+router.get('/shared-images/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
