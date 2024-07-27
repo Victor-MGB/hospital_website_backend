@@ -1,118 +1,113 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+// Define the Address Schema
 const AddressSchema = new Schema({
-  street: { type: String },
-  city: { type: String },
-  state: { type: String },
-  zip_code: { type: String },
-  country: { type: String }
-}, { _id: false });
+  country: String,
+  state: String,
+  city: String,
+  street: String,
+  house_number: String
+});
 
-const ContactSchema = new Schema({
-  phone: { type: String },
-  email: { type: String },
-  address: AddressSchema
-}, { _id: false });
+// Define the Shift Schema
+const ShiftSchema = new Schema({
+  name: String,
+  startTime: Date,
+  endTime: Date,
+  incharge: {
+    _id: mongoose.ObjectId,
+    firstName: String,
+    surname: String
+  }
+});
 
-const MedicalHistorySchema = new Schema({
-  condition: { type: String },
-  diagnosis_date: { type: Date },
-  treatment: { type: String },
-  notes: { type: String }
-}, { _id: false });
+// Define the Billing Schema
+const BillingSchema = new Schema({
+  billingId: mongoose.ObjectId,
+  amount: Number,
+  billingDate: Date,
+  paymentStatus: String,
+  reason: String
+});
 
-const MedicalInfoSchema = new Schema({
-  medical_history: [{
-    condition: { type: String },
-    diagnosis_date: { type: Date },
-    treatment: { type: String },
-    notes: { type: String }
-  }],
-  current_medications: [{
-    medication_name: { type: String },
-    dosage: { type: String },
-    frequency: { type: String },
-    prescribed_by: { type: String }
-  }],
-  allergies: [{
-    allergen: { type: String },
-    reaction: { type: String },
-    severity: { type: String }
-  }],
-  immunizations: [{
-    vaccine: { type: String },
-    date_given: { type: Date },
-    notes: { type: String }
-  }],
-  family_history: [{
-    relative: { type: String },
-    condition: { type: String },
-    notes: { type: String }
+// Define the Staff Details Schema
+const StaffDetailsSchema = new Schema({
+  staffCategory: {
+    _id: mongoose.ObjectId,
+    name: String
+  },
+  staffType: {
+    _id: mongoose.ObjectId,
+    type: String
+  },
+  staffGrade: {
+    _id: mongoose.ObjectId,
+    grade: String
+  },
+  shifts: [ShiftSchema],
+  erShifts: [{
+    emergencyRoomShiftId: mongoose.ObjectId,
+    shiftDetails: ShiftSchema
   }]
 });
 
-const AppointmentSchema = new mongoose.Schema({
-  appointment_id: { type: mongoose.Types.ObjectId },
-  date: { type: Date },
-  time: { type: String },
-  doctor: { type: String },
-  department: { type: String },
-  notes: { type: String },
-  visit_summary: { type: String },
-  diagnoses: [
-    {
-      condition: { type: String },
-      details: { type: String }
+// Define the Patient Details Schema
+const PatientDetailsSchema = new Schema({
+  admittedBy: {
+    _id: mongoose.ObjectId,
+    firstName: String,
+    surname: String
+  },
+  supervisedBy: {
+    _id: mongoose.ObjectId,
+    firstName: String,
+    surname: String
+  },
+  bed: {
+    _id: mongoose.ObjectId,
+    bedNo: Number,
+    supervisedBy: {
+      _id: mongoose.ObjectId,
+      firstName: String,
+      surname: String
     }
-  ],
-  follow_up: { type: String }
-}, { _id: false });
-
-const EmergencyContactSchema = new Schema({
-  name: { type: String },
-  relationship: { type: String },
-  phone: { type: String },
-  email: { type: String }
-}, { _id: false });
-
-const BillingStageSchema = new Schema({
-  stage: { type: String },
-  date: { type: Date },
-  details: { type: String },
-  paid: { type: Boolean }
+  },
+  medication: {
+    _id: mongoose.ObjectId,
+    name: String,
+    dosage: Number
+  },
+  admittedDate: Date,
+  age: Number,
+  billings: [BillingSchema]
 });
 
-const BillingInfoSchema = new Schema({
-  payment_method: { type: String },
-  billing_address: AddressSchema,
-  outstanding_balance: { type: Number },
-  billing_stages: [BillingStageSchema]
-});
-
-
+// Define the User Schema
 const UserSchema = new Schema({
   personal_info: {
     first_name: { type: String, required: true },
+    middle_name: { type: String },
     last_name: { type: String, required: true },
     date_of_birth: { type: Date, required: true },
     gender: { type: String, required: true },
-    contact: ContactSchema,
+    contact: {
+      phone: { type: String },
+      email: { type: String, required: true }
+    },
+    emergencyContactNumber: { type: String },
+    address: AddressSchema
   },
-  profilePicture: { type: String }, // Added profilePicture
-  medical_info: MedicalInfoSchema,
-  appointments: [AppointmentSchema],
-  emergency_contact: { type: EmergencyContactSchema },
-  billing_info: { type: BillingInfoSchema, default: () => ({ billing_stages: [] }) }, // Ensure billing_info is initialized
   auth: {
-    username: { type: String, unique: true, required: true },
+    username: { type: String, required: true, unique: true },
     password_hash: { type: String, required: true }
   },
-  created_at: { type: Date, default: Date.now },
-  updated_at: { type: Date, default: Date.now },
-  medicalRecordNumber: { type: String, unique: true, required: true } // Added medicalRecordNumber
+  medicalRecordNumber: { type: String, required: true, unique: true },
+  status: { type: String, enum: ['pending', 'approved'], default: 'pending' },
+  staffDetails: StaffDetailsSchema,
+  patientDetails: PatientDetailsSchema
 });
 
+// Create and export the model
 const User = mongoose.model('User', UserSchema);
-
 module.exports = User;

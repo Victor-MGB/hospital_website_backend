@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const User = require('../model/User'); // Ensure this path is correct
+const User = require('../model/User'); // Adjust the path to where your User model is located
 
 const router = express.Router();
 

@@ -1,46 +1,37 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors')
-const authRoutes = require('./routes/auth'); // Ensure this path is correct
-const billingStagesRoutes = require('./routes/billingStages'); // Ensure this path is correct
-const patientsRoutes = require('./routes/patients'); // Ensure this path is correct
-const medicalInfoRoutes = require('./routes/medicalInfo');
-const insuranceInfoRoutes = require('./routes/insuranceInfo');
-const billingInfoRoutes = require('./routes/billingInfo');
-const appointmentRoutes = require('./routes/appointments');
-const emergencyContact = require('./routes/emergencyInfo')
-const userRoutes = require('./routes/userImage'); // Ensure this path is correct // Ensure this path is correct
+const cors = require('cors');
 const path = require('path');
-const fs = require('fs')
-
+const fs = require('fs');
+const Register = require('./routes/Register')
+const Login = require('./routes/Login')
+const Approve = require('./routes/Approve')
+const DeleteUser = require('./routes/DeleteUser')
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
+// Middleware
 app.use(bodyParser.json());
-app.use(cors()); // Add this line to enable CORS
+app.use(cors());
+app.use(express.json());
 
+// Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
 }
 
+// Serve static files from the uploads directory
 app.use('/uploads', express.static('uploads'));
+app.use('/api', Register)
+app.use('/api',Login)
+app.use('/api',Approve)
+app.use('/api/user', DeleteUser)
 
-
-app.use(express.json());
-app.use('/api', authRoutes);
-app.use('/api', billingStagesRoutes);
-app.use('/api', patientsRoutes);
-app.use('/api', medicalInfoRoutes);
-app.use('/api', insuranceInfoRoutes);
-app.use('/api', billingInfoRoutes);
-app.use('/api', appointmentRoutes);
-app.use('/api', emergencyContact)
-app.use('/api', userRoutes)
-
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -48,5 +39,5 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
 
-
+// Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

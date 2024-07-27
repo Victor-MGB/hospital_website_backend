@@ -1,38 +1,27 @@
-const nodemailer = require("nodemailer");
-require("dotenv").config();
+const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
-const sendEmail = (to, subject, text, html) => {
-  return new Promise((resolve, reject) => {
-    const mailOptions = {
-      from: {
-        name: "CentralCityBank",
-        address: process.env.EMAIL_USER,
-      },
-      to,
-      subject,
-      text,
-      html,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Error sending email:", error);
-        reject(error);
-      } else {
-        console.log("Email sent:", info.response);
-        resolve(info.response);
-      }
-    });
-  });
+const generateMedicalRecordNumber = () => {
+  // Generate a unique medical record number
+  return `MRN-${Math.floor(Math.random() * 1000000)}`;
 };
 
-module.exports = sendEmail;
+const sendEmail = async (to, subject, text) => {
+  const transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to,
+    subject,
+    text
+  };
+
+  return transporter.sendMail(mailOptions);
+};
+
+module.exports = { generateMedicalRecordNumber, sendEmail };
