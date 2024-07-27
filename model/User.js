@@ -105,7 +105,9 @@ const UserSchema = new Schema({
   medicalRecordNumber: { type: String, required: true, unique: true },
   status: { type: String, enum: ['pending', 'approved'], default: 'pending' },
   staffDetails: StaffDetailsSchema,
-  patientDetails: PatientDetailsSchema
+  patientDetails: PatientDetailsSchema,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 });
 
 // Create and export the model
