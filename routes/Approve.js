@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../model/User');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const router = express.Router();
@@ -18,9 +19,13 @@ router.patch('/approve-payment/:id', async (req, res) => {
       });
     }
 
+    // Generate a JWT token for the user
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
     res.status(200).json({
       success: true,
       message: 'Payment approved and user status updated',
+      token,
       user
     });
   } catch (error) {
