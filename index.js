@@ -12,6 +12,7 @@ const DeleteUser = require('./routes/DeleteUser');
 const ForgottenPassword = require('./routes/ForgottenPassword');
 const ResetPassword = require('./routes/ResetPassword');
 const PatientDetails = require('./routes/PatientDetails');
+const PatientStage = require('./routes/PatientStage');
 const UpdatePatients = require('./routes/UpdatePatients');
 require('dotenv').config();
 
@@ -20,7 +21,10 @@ const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://hospital-website-backend.onrender.com/', // Change this to your front-end URL
+  credentials: true, // Allow cookies to be sent
+}));
 app.use(express.json());
 
 // Create uploads directory if it doesn't exist
@@ -38,6 +42,13 @@ app.use('/api/user', DeleteUser)
 app.use('/api', ForgottenPassword);
 app.use('/api', ResetPassword);
 app.use('/api',PatientDetails);
+app.use('/api',UpdatePatients)
+app.use('/api', PatientStage);
+
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+// });
 
 app.get('/api/users', async (req, res) => {
   try {
