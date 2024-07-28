@@ -11,6 +11,8 @@ const Approve = require('./routes/Approve')
 const DeleteUser = require('./routes/DeleteUser');
 const ForgottenPassword = require('./routes/ForgottenPassword');
 const ResetPassword = require('./routes/ResetPassword');
+const PatientDetails = require('./routes/PatientDetails');
+const UpdatePatients = require('./routes/UpdatePatients');
 require('dotenv').config();
 
 const app = express();
@@ -35,6 +37,7 @@ app.use('/api',Approve)
 app.use('/api/user', DeleteUser)
 app.use('/api', ForgottenPassword);
 app.use('/api', ResetPassword);
+app.use('/api',PatientDetails);
 
 app.get('/api/users', async (req, res) => {
   try {
