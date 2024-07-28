@@ -63,7 +63,8 @@ router.post('/login', async (req, res) => {
           contactNumber: user.personal_info.contact.phone,
           dateOfBirth: user.personal_info.date_of_birth,
           gender: user.personal_info.gender,
-          emergencyContactNumber: user.personal_info.emergencyContactNumber,
+          emergencyContactNumber: user.personal_info.emergency_contact_number,
+          medicalRecordNumber: user.medicalRecordNumber,
           address: user.personal_info.address
         }
       });
