@@ -1,13 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const User = require('./model/User')
+const User = require('./model/User');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const Register = require('./routes/Register')
-const Login = require('./routes/Login')
-const Approve = require('./routes/Approve')
+const Register = require('./routes/Register');
+const Login = require('./routes/Login');
+const Approve = require('./routes/Approve');
 const DeleteUser = require('./routes/DeleteUser');
 const ForgottenPassword = require('./routes/ForgottenPassword');
 const ResetPassword = require('./routes/ResetPassword');
@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'https://hospital-website-backend.onrender.com/', // Change this to your front-end URL
+  origin: 'http://localhost:3000', // Change this to your front-end URL
   credentials: true, // Allow cookies to be sent
 }));
 app.use(express.json());
@@ -35,20 +35,15 @@ if (!fs.existsSync(uploadsDir)) {
 
 // Serve static files from the uploads directory
 app.use('/uploads', express.static('uploads'));
-app.use('/api', Register)
-app.use('/api',Login)
-app.use('/api',Approve)
-app.use('/api/user', DeleteUser)
+app.use('/api', Register);
+app.use('/api', Login);
+app.use('/api', Approve);
+app.use('/api/user', DeleteUser);
 app.use('/api', ForgottenPassword);
 app.use('/api', ResetPassword);
-app.use('/api',PatientDetails);
-app.use('/api',UpdatePatients)
+app.use('/api', PatientDetails);
+app.use('/api', UpdatePatients);
 app.use('/api', PatientStage);
-
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-// });
 
 app.get('/api/users', async (req, res) => {
   try {
@@ -62,7 +57,7 @@ app.get('/api/users', async (req, res) => {
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
