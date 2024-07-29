@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(bodyParser.json());
 app.use(cors({
-  origin: 'http://localhost:3000', // Change this to your front-end URL
+  origin: 'http://localhost:4000', // Change this to your front-end URL
   credentials: true, // Allow cookies to be sent
 }));
 app.use(express.json());
